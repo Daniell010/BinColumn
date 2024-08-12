@@ -65,7 +65,7 @@ QList<QStringList> BinColumn::parseCfgFile(const QByteArray &file)
     QTextStream stream(file);
 
     // Пропуск заголовка
-    QString header = stream.readLine();
+    //QString header = stream.readLine();
 
     while (!stream.atEnd())
     {
@@ -166,7 +166,7 @@ void BinColumn::processListLines(QList<QStringList> &listLine, const QString &nu
     }
     else if (numberSystem == "HEX")
     {
-        convertFunction = [](int number) { return QString("0x%1").arg(number, 0, 16).toUpper(); };
+        convertFunction = [](int number) { return QString("0x%1").arg(number, 2, 16, QChar('0')); };
     }
     else if (numberSystem == "BIN")
     {
@@ -222,19 +222,15 @@ void BinColumn::on_buttonApply_clicked()
 {
     QString fileName = ui->lineFileName->text();
 
-    // Чтение и парсинг файла
     QByteArray fileContent = readCfgFile(fileName);
     auto listLine = parseCfgFile(fileContent);
 
-    // Обработка данных
     processListLines(listLine, ui->boxNumberSystem->currentText());
 
-    // Выбор директории и генерация нового имени файла
     QString newFileName = generateNewFileName(fileName);
 
     if (!newFileName.isEmpty())
     {
-        // Запись данных в новый файл
         writeCfgFile(newFileName, listLine);
     }
 }
