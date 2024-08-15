@@ -166,7 +166,7 @@ void BinColumn::processListLines(QList<QStringList> &listLine, const QString &nu
     }
     else if (numberSystem == "HEX")
     {
-        convertFunction = [](int number) { return QString("0x%1").arg(number, 2, 16, QChar('0')); };
+        convertFunction = [](int number) {  return QString("0x") + QString("%1").arg(number, 2, 16, QChar('0')).toUpper(); };
     }
     else if (numberSystem == "BIN")
     {
@@ -187,8 +187,19 @@ void BinColumn::processListLines(QList<QStringList> &listLine, const QString &nu
         {
             if (line.size() > index)
             {
-                bool ok;
-                int number = line[index].toInt(&ok);
+                bool ok = false;
+                int number = line[index].toInt(&ok, 10);
+
+                if (!ok) {
+                    number = line[index].toInt(&ok, 16);
+                }
+                if (!ok) {
+                    number = line[index].toInt(&ok, 8);
+                }
+                if (!ok) {
+                    number = line[index].toInt(&ok, 2);
+                }
+
                 if (ok)
                 {
                     line[index] = convertFunction(number);
