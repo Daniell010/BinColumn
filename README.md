@@ -1,1 +1,1 @@
-This program simplifies your life when you need to modify values in a CSV table. It allows you to convert the numbering system of a specified column from decimal to your desired numeral system.
+This program makes your life easier when you need to change the values in the CSV table. It allows you to convert the number system of the specified column from one to another.
